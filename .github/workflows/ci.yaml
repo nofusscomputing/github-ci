@@ -1,0 +1,107 @@
+---
+
+name: 'CI'
+
+
+on:
+  # workflow_call:
+  #   inputs:
+  #     build-branch:         # tag / dev
+  #       required: true
+  #       type: string
+  push:
+    branches:
+      - '**'
+    tags:
+      - '*'
+  # pull_request:
+  #   branches:
+  #     - '**'
+
+
+# env:
+#   DOCKER_BUILD_IMAGE: "ghcr.io/${{ github.repository }}-fred:${{ github.sha }}"
+
+
+# permissions:
+#   pull-requests: write
+#   contents: read
+#   actions: read
+#   checks: write
+#   packages: write
+#   security-events: write
+#   statuses: write
+
+
+
+jobs:
+
+
+  docker-changed:
+    if:
+      (${{
+        github.event.push
+          ||
+        github.ref_type == 'tag'
+      }})
+    runs-on: ubuntu-latest
+    name: Docker Changed Check
+    outputs:
+      feature: ${{ steps.changes-feature.outputs.src }}
+      development: ${{ steps.changes-development.outputs.src }}
+    steps:
+
+
+      - uses: actions/checkout@v4
+
+
+      - uses: dorny/paths-filter@v3
+        name: Development Changes
+        if:
+          (
+            github.ref_name == 'development'
+          )
+        id: changes-development
+        with:
+          ref: master
+          filters: |
+            src:
+              - '.github/workflows/docker.yaml'
+      - uses: dorny/paths-filter@v3
+        name: Feature Branch
+        if:
+          (
+            github.ref_name != 'development'
+              &&
+            github.ref_name != 'master'
+          )
+        id: changes-feature
+        with:
+          ref: development
+          filters: |
+            src:
+              - '.github/workflows/docker.yaml'
+
+
+  docker-check:
+    needs: docker-changed
+    name: 'Docker'
+    if:
+      (
+        needs.docker-changed.outputs.feature == 'true'
+          ||
+        needs.docker-changed.outputs.development == 'true'
+      )
+    uses: ./.github/workflows/docker.yaml
+    with:
+      DOCKER_BUILD_IMAGE_NAME: "nofusscomputing/workflow-docker"
+      DOCKER_PUBLISH_IMAGE_NAME: "nofusscomputing/workflow-docker-publish"
+      DOCKER_PUBLISH_REGISTRY: "ghcr.io"
+
+
+
+  # release:
+  #   name: 'Release'
+  #   uses: nofusscomputing/scratchpad/.github/workflows/release.yaml@further-testing
+  #   # with:
+  #   #   DOCKER_BUILD_IMAGE_NAME: "${{ github.repository }}"
