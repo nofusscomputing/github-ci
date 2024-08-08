@@ -504,8 +504,8 @@ jobs:
           # path: changelog-release.md
 
 
-      - name: Create Draft GH Release
-        if: ${{ inputs.CZ_PRE_RELEASE == 'none' }}
+      - name: Create Draft GH Release - master Branch
+        if: ${{ inputs.CZ_PRE_RELEASE == 'none' || github.ref_name == 'master' }}
         # id: release
         uses: softprops/action-gh-release@v2
         with:
@@ -513,11 +513,12 @@ jobs:
           tag_name: ${{ needs.bump.outputs.version-new }}
           body_path: changelog-release.md
           make_latest: true
+          prerelease: false
           draft: true
 
 
-      - name: Create Draft GH Release
-        if: ${{ inputs.CZ_PRE_RELEASE != 'none' }}
+      - name: Create Draft GH Release - Other Branches
+        if: ${{ inputs.CZ_PRE_RELEASE != 'none' && github.ref_name != 'master' }}
         # id: release
         uses: softprops/action-gh-release@v2
         with:
