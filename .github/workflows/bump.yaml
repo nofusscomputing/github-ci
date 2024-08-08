@@ -128,17 +128,25 @@ jobs:
         run: |
           if [ "${{ inputs.CZ_PRE_RELEASE }}" != 'none' ]; then
 
-            echo "[debug] Pre-Release detected: ${{ inputs.CZ_PRE_RELEASE }}";
+            if [ "0${{ inputs.CZ_PRE_RELEASE }}" != '0' ]; then
 
-            export pre_release="--prerelease ${{ inputs.CZ_PRE_RELEASE }}";
+              echo "[debug] Pre-Release detected: ${{ inputs.CZ_PRE_RELEASE }}";
+
+              export pre_release="--prerelease ${{ inputs.CZ_PRE_RELEASE }}";
+
+            fi;
 
           fi;
 
           if [ "${{ inputs.CZ_INCREMENT }}" != 'none' ]; then
 
-            echo "[debug] Pre-Release detected: ${{ inputs.CZ_INCREMENT }}";
+            if [ "0${{ inputs.CZ_PRE_RELEASE }}" != '0' ]; then
 
-            export increment="--increment ${{ inputs.CZ_INCREMENT }}";
+              echo "[debug] Pre-Release detected: ${{ inputs.CZ_INCREMENT }}";
+
+              export increment="--increment ${{ inputs.CZ_INCREMENT }}";
+
+            fi;
 
           fi;
 
