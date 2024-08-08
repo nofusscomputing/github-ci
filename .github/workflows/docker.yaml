@@ -679,8 +679,8 @@ jobs:
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
           registry: ${{ inputs.DOCKER_PUBLISH_REGISTRY }}
-          username: ${{ inputs.DOCKER_PUBLISH_USERNAME }}
-          password: ${{ inputs.DOCKER_PUBLISH_PASSWORD }}
+          username: ${{ secrets.DOCKER_PUBLISH_USERNAME }}
+          password: ${{ secrets.DOCKER_PUBLISH_PASSWORD }}
 
 
       - name: Tag Image with GIT Tag '${{ github.ref_name }}'
