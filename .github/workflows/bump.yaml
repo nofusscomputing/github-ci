@@ -476,7 +476,7 @@ jobs:
           # path: changelog-release.md
 
 
-      - name: Create GH Release
+      - name: Create Draft GH Release
         # if: ${{ github.ref_type == 'tag' }}
         id: release
         uses: softprops/action-gh-release@v2
@@ -485,6 +485,7 @@ jobs:
           tag_name: ${{ needs.bump.outputs.version-new }}
           body_path: changelog-release.md
           make_latest: true
+          draft: true
 
 
   release-label:

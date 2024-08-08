@@ -891,3 +891,20 @@ jobs:
       #     files: <list of files>
       #     release: ${{ github.ref_name }}
       #     tag: ${{ github.ref_name }}
+
+
+  docker-release:
+    name: Mark Release as not draft
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Mark GH Release as not a draft
+        # if: ${{ github.ref_type == 'tag' }}
+        id: release
+        uses: softprops/action-gh-release@v2
+        with:
+          # name: ${{ needs.bump.outputs.version-new }}
+          tag_name: ${{ needs.bump.outputs.version-new }}
+          # body_path: changelog-release.md
+          make_latest: true
+          draft: false
