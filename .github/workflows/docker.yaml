@@ -953,13 +953,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Mark GH Release as not a draft
-        # if: ${{ github.ref_type == 'tag' }}
-        id: release
-        uses: softprops/action-gh-release@v2
+      # - name: Mark GH Release as not a draft
+      #   # if: ${{ github.ref_type == 'tag' }}
+      #   id: release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     name: ${{ github.ref_name }}
+      #     tag_name: ${{ github.ref_name }}
+      #     # body_path: changelog-release.md
+      #     make_latest: true
+      #     draft: false
+
+      - name: Publish Release
+        uses: grzegorzkrukowski/action-publish-github-release@v1
         with:
-          name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          # body_path: changelog-release.md
-          make_latest: true
-          draft: false
+          token: ${{  secrets.GITHUB_TOKEN }}
