@@ -946,6 +946,8 @@ jobs:
 
   docker-release:
     if: ${{ github.ref_type == 'tag' }}
+    needs:
+      - docker-release-files
     name: Mark Release Live
     runs-on: ubuntu-latest
     steps:
@@ -955,7 +957,7 @@ jobs:
         id: release
         uses: softprops/action-gh-release@v2
         with:
-          # name: ${{ needs.bump.outputs.version-new }}
+          name: ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           # body_path: changelog-release.md
           make_latest: true
