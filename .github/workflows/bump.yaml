@@ -452,11 +452,24 @@ jobs:
       #   run: |
       #     git tag ${{ steps.get_next_version.outputs.nextStrict }}
 
-      # - name: Update Changelog
-      #   if: ${{ github.ref_name != 'master' }}
-      #   shell: bash
-      #   run: |
-      #     git push --tags
+      - name: Checkout master
+        if: ${{ github.ref_name == 'master' }}
+        shell: bash
+        run: |
+          git checkout master;
+
+      - name: Merge changes to master
+        if: ${{ github.ref_name == 'master' }}
+        shell: bash
+        run: |
+          git merge --no-ff development;
+
+
+      - name: Push changes
+        if: ${{ github.ref_name == 'master' }}
+        shell: bash
+        run: |
+          git push origin master;
 
 
 
