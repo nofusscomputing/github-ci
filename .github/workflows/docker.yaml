@@ -120,10 +120,10 @@ jobs:
           echo "**************************";
       - uses: actions/checkout@v4
 
-      - name: Dummy Task
-        if: ${{ github.ref_type == 'tag' }}
-        run: |
-          echo "This Job does nothing however as 'docker-build' is a dependency job, must do something.";
+      # - name: Dummy Task
+      #   if: ${{ github.ref_type == 'tag' }}
+      #   run: |
+      #     echo "This Job does nothing however as 'docker-build' is a dependency job, must do something.";
 
 
 
@@ -136,14 +136,14 @@ jobs:
 
 
       - name: Setup BuildX
-        if: ${{ github.ref_type != 'tag' }}
+        # if: ${{ github.ref_type != 'tag' }}
         run: |
           docker buildx create --name project-v3-builder;
           docker buildx use project-v3-builder;
 
 
       - name: build image
-        if: ${{ github.ref_type != 'tag' }}
+        # if: ${{ github.ref_type != 'tag' }}
         run: |
           docker buildx build --platform="linux/amd64,linux/arm64" . \
             --label "org.opencontainers.image.created=$(date '+%Y-%m-%dT%H:%M:%S%:z')" \
@@ -163,7 +163,7 @@ jobs:
 
 
       - name: Remove "Unknown" Image from Manifest
-        if: ${{ github.ref_type != 'tag' }}
+        # if: ${{ github.ref_type != 'tag' }}
         run: |
 
           DOCKER_MULTI_ARCH_IMAGES=$(docker buildx imagetools inspect "${{ inputs.DOCKER_BUILD_REGISTRY }}/${{ inputs.DOCKER_BUILD_IMAGE_NAME }}:${{ inputs.DOCKER_BUILD_IMAGE_TAG }}" --format "{{ range .Manifest.Manifests }}{{ if ne (print .Platform) \"&{unknown unknown  [] }\" }}${{ inputs.DOCKER_BUILD_REGISTRY }}/${{ inputs.DOCKER_BUILD_IMAGE_NAME }}:${{ inputs.DOCKER_BUILD_IMAGE_TAG }}@{{ println .Digest }}{{end}} {{end}}");
@@ -215,7 +215,7 @@ jobs:
 
 
       - name: Cleanup BuildX
-        if: ${{ github.ref_type != 'tag' }}
+        # if: ${{ github.ref_type != 'tag' }}
         run: |
           docker buildx rm project-v3-builder;
 
