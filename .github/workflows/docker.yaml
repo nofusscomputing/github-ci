@@ -296,7 +296,7 @@ jobs:
           tag_name:  ${{ github.ref_name }}
           # body_path: changelog-release.md
           # make_latest: true
-          # draft: true
+          draft: true
           files: |
             trivy-results.sarif
 
@@ -520,7 +520,7 @@ jobs:
           tag_name:  ${{ github.ref_name }}
           # body_path: changelog-release.md
           # make_latest: true
-          # draft: true
+          draft: true
           files: |
             dependency-results.sbom.json
 
@@ -860,7 +860,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           # body_path: changelog-release.md
           # make_latest: true
-          # draft: true
+          draft: true
           files: |
             ${{ inputs.DOCKER_PUBLISH_REGISTRY }}-attestation-image.jsonl
             ${{ inputs.DOCKER_PUBLISH_REGISTRY }}-attestation-sbom.jsonl
@@ -919,7 +919,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           # body_path: changelog-release.md
           # make_latest: true
-          # draft: true
+          draft: true
           files: |
             ${{ inputs.DOCKER_BUILD_REGISTRY }}-attestation-image.jsonl
             ${{ inputs.DOCKER_BUILD_REGISTRY }}-attestation-sbom.jsonl
