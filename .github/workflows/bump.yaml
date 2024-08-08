@@ -460,6 +460,12 @@ jobs:
       #   run: |
       #     git tag ${{ steps.get_next_version.outputs.nextStrict }}
 
+      - name: Configure git
+        shell: bash
+        run: |
+          git config --global user.email "helpdesk@nofusscomputing.com";
+          git config --global user.name "nfc_bot";
+
       - name: Checkout master
         if: ${{ github.ref_name == 'master' }}
         shell: bash
