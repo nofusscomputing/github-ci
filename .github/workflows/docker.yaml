@@ -894,6 +894,7 @@ jobs:
 
 
   docker-release:
+    if: ${{ github.ref_type == 'tag' }}
     name: Mark Release as not draft
     runs-on: ubuntu-latest
     steps:
