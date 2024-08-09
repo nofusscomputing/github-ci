@@ -35,3 +35,13 @@ jobs:
           skip_revert: true
           types: "build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test"
 
+
+  pr_dependencies:
+    runs-on: ubuntu-latest
+    name: Dependency Check
+    steps:
+    - uses: gregsdennis/dependencies-action@4fc2a4879387b43f784920699cb9303dd0524ac4
+      with:
+        custom-domains: my-custom-domain.io another.domain.com
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
